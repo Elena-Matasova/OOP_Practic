@@ -224,7 +224,11 @@ reviewer2.courses_attached+=["Python", "Java"]
 print('Эксперт1:')
 print(reviewer1)
 print('Эксперт2:')
+<<<<<<< HEAD
 print(reviewer2)
+=======
+print(reviewer2)    
+>>>>>>> 3f80f56f78a2f32c07f3fa946dfd187ec58f5dc0
 
 
 
