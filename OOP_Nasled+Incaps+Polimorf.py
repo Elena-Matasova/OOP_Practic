@@ -200,8 +200,7 @@ reviewer2.courses_attached+=["Python", "Java"]
 print('Эксперт1:')
 print(reviewer1)
 print('Эксперт2:')
-print(reviewer2)
-#     
+print(reviewer2)    
 
 
 
