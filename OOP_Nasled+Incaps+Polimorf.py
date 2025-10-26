@@ -19,7 +19,7 @@ class Student:
         else:
             return 'Ошибка'
 
-    def average_grade(self):
+    def _average_grade(self):
         total_sum = 0
         grades_count = 0
         for key, value in self.grades.items():
@@ -34,25 +34,35 @@ class Student:
 
         result = (f'Имя: {self.name}\n'
               f'Фамилия: {self.surname}\n'
-              f'Средняя оценка за домашнее задание: {self.average_grade()}\n'
+              f'Средняя оценка за домашнее задание: {self._average_grade()}\n'
               f'Курсы в процессе изучения: {courses_in_progress_str}\n'
               f'Завершенные курсы: {finished_courses_str}\n')
         return result
 
     def __lt__(self, other):
-        return self.average_grade() < other.average_grade()
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self._average_grade() < other._average_grade()
 
     def __le__(self, other):
-        return self.average_grade() <= other.average_grade()
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self._average_grade() <= other._average_grade()
 
     def __eq__(self, other):
-        return self.average_grade() == other.average_grade()
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self._average_grade() == other._average_grade()
 
     def __gt__(self, other):
-        return self.average_grade() > other.average_grade()
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self._average_grade() > other._average_grade()
 
     def __ge__(self, other):
-        return self.average_grade() >= other.average_grade()
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self._average_grade() >= other._average_grade()
 
 
 class Mentor:
@@ -67,7 +77,7 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
-    def average_grade(self):
+    def _average_grade(self):
         total_sum = 0
         grades_count = 0
         for key, value in self.grades.items():
@@ -79,29 +89,41 @@ class Lecturer(Mentor):
     def __str__(self):
         result = (f'Имя: {self.name}\n'
                   f'Фамилия: {self.surname}\n'
-                  f'Средняя оценка за лекции: {self.average_grade()}\n')
+                  f'Средняя оценка за лекции: {self._average_grade()}\n')
         return result
 
     def __lt__(self, other):
-        return self.average_grade() < other.average_grade()
+        if not isinstance(other, Lecturer):
+            return NotImplemented
+        return self._average_grade() < other._average_grade()
 
     def __le__(self, other):
-        return self.average_grade() <= other.average_grade()
+        if not isinstance(other, Lecturer):
+            return NotImplemented
+        return self._average_grade() <= other._average_grade()
 
     def __eq__(self, other):
-        return self.average_grade() == other.average_grade()
+        if not isinstance(other, Lecturer):
+            return NotImplemented
+        return self._average_grade() == other._average_grade()
 
     def __gt__(self, other):
-        return self.average_grade() > other.average_grade()
+        if not isinstance(other, Lecturer):
+            return NotImplemented
+        return self._average_grade() > other._average_grade()
 
     def __ge__(self, other):
-        return self.average_grade() >= other.average_grade()
+        if not isinstance(other, Lecturer):
+            return NotImplemented
+        return self._average_grade() >= other._average_grade()
 
 class Reviewer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
 
     def rate_hw(self, student, course, grade):
+        if not 1 <= grade <= 10:
+            return print('Оценка должна быть в диапазоне 1–10')
         if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
             if course in student.grades:
                 student.grades[course] += [grade]
@@ -157,11 +179,12 @@ print('Студент1:')
 print(student1)
 print('Студент2:')
 print(student2)
-print(f'Студент1, ср. оценка: {student1.average_grade()} < Студент2, ср. оценка: {student2.average_grade()} -> {student1 < student2}')
-print(f'Студент1, ср. оценка: {student1.average_grade()} = Студент2, ср. оценка: {student2.average_grade()} -> {student1 == student2}')
-print(f'Студент1, ср. оценка: {student1.average_grade()} > Студент2, ср. оценка: {student2.average_grade()} -> {student1 > student2}\n')
+print(f'Студент1, ср. оценка: {student1._average_grade()} < Студент2, ср. оценка: {student2._average_grade()} -> {student1 < student2}')
+print(f'Студент1, ср. оценка: {student1._average_grade()} = Студент2, ср. оценка: {student2._average_grade()} -> {student1 == student2}')
+print(f'Студент1, ср. оценка: {student1._average_grade()} > Студент2, ср. оценка: {student2._average_grade()} -> {student1 > student2}\n')
 
-print(f'Средняя оценка всех студентов в рамках курса Python: {students_average_grade([student1, student2], 'Python')}\n')
+print(f"Средняя оценка всех студентов в рамках курса Python: {students_average_grade([student1, student2], 'Python')}\n")
+print('-' * 50)
 
 lecturer1 = Lecturer('Иван', 'Иванов')
 lecturer1.courses_attached.append('Python')
@@ -187,11 +210,12 @@ print(lecturer2)
 print("Лектор2 в классе Ментор -> ", isinstance(lecturer2, Mentor))
 print('')
 #print(f'Оценки за лекции: {lecturer2.grades}\n')
-print(f'Лектор1, ср. оценка: {lecturer1.average_grade()} < Лектор2, ср. оценка: {lecturer2.average_grade()} -> {lecturer1 < lecturer2}')
-print(f'Лектор1, ср. оценка: {lecturer1.average_grade()} = Лектор2, ср. оценка: {lecturer2.average_grade()} -> {lecturer1 == lecturer2}')
-print(f'Лектор1, ср. оценка: {lecturer1.average_grade()} > Лектор2, ср. оценка: {lecturer2.average_grade()} -> {lecturer1 > lecturer2}\n')
+print(f'Лектор1, ср. оценка: {lecturer1._average_grade()} < Лектор2, ср. оценка: {lecturer2._average_grade()} -> {lecturer1 < lecturer2}')
+print(f'Лектор1, ср. оценка: {lecturer1._average_grade()} = Лектор2, ср. оценка: {lecturer2._average_grade()} -> {lecturer1 == lecturer2}')
+print(f'Лектор1, ср. оценка: {lecturer1._average_grade()} > Лектор2, ср. оценка: {lecturer2._average_grade()} -> {lecturer1 > lecturer2}\n')
 
-print(f'Средняя оценка всех лекторов в рамках курса Python: {lecturers_average_grade([lecturer1, lecturer2], 'Python')}\n')
+print(f"Средняя оценка всех лекторов в рамках курса Python: {lecturers_average_grade([lecturer1, lecturer2], 'Python')}\n")
+print('-' * 50)
 
 reviewer1 = Reviewer('Петр', 'Петров')
 reviewer1.courses_attached+=["C++", "Git"]
@@ -201,7 +225,6 @@ print('Эксперт1:')
 print(reviewer1)
 print('Эксперт2:')
 print(reviewer2)
-#     
 
 
 
